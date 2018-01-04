@@ -1,95 +1,67 @@
 # coding=utf-8
-from inflection import underscore as to_underscore
+from typing import ClassVar
 from melcloud.constants import LANGUAGES
 from melcloud.exceptions import MELCloudError
-from melcloud.objects.building import Building
-from melcloud.utils import fix_dict_keys
+from melcloud.objects.account import Account
+from melcloud.objects.connection import BaseConnection
+from melcloud.sync.connection import SyncConnection
+from melcloud.utils import rename_key
 
 __author__ = "Gareth Coles"
 
 
-class Platform:
-    _login_email = ""
-    _login_password = ""
-    language = None
-    logged_in = False
-    loaded_devices = False
+class MELCloud:
+    def __init__(self, language: LANGUAGES, connection: ClassVar[BaseConnection]=SyncConnection):
+        self.language: LANGUAGES = language
+        self.connection: BaseConnection = connection(self)
 
-    buildings = None
-    context_key = None
+        self.logged_in: bool = False
+        self.has_loaded_devices: bool = False
+        self.account: Account = None
 
-    client = None
-    terms = None
-    al = None
-    ml = None
-    cmi = None
-    is_staff = None
-    cutf = None
-    caa = None
-    receive_country_notifications = None
-    receive_all_notifications = None
-    caca = None
-    caga = None
-    maximum_devices = None
-    show_diagnostics = None
-    country = None
-    real_client = None
-    name = None
-    use_fahrenheit = None
-    duration = None
-    expiry = None
-    cmsc = None
-    partner_application_version = None
-    email_settings_reminder_shown = None
-    email_unit_errors = None
-    email_comms_errors = None
-    is_impersonated = None
-    language_code = None
-    country_name = None
-    currency_symbol = None
-    support_email_address = None
-    date_seperator = None
-    time_seperator = None
-    atw_logo_file = None
-    decc_report = None
-    csv_report_1min = None
-    hide_preset_panel = None
-    email_settings_reminder_required = None
-    terms_text = None
-    map_zoom = None
-    map_longitude = None
-    map_latitude = None
+    def reset(self):
+        self.logged_in = False
+        self.has_loaded_devices = False
+        self.account = None
 
-    def __init__(self, email: str, password: str, language: LANGUAGES):
-        self._login_email = email
-        self._login_password = password
-        self.language = language
+    def clear_devices(self):
+        pass
 
-        self.buildings = {}
+    def login(self, email: str, password: str):
+        return self.connection.login(email, password)
 
-    def _raise_error(self, data):
-        if "ErrorId" in data and data["ErrorId"]:
-            raise MELCloudError(int(data["ErrorID"]), data.get("ErrorMessage"))
+    def load_devices(self, reload=False):
+        return self.connection.load_devices(reload)
 
-    def _parse_login(self, data):
-        self._raise_error(data)
-        login_data = fix_dict_keys(data)["login_data"]
+    def raise_on_error(self, data):
+        if data.get("error_id"):
+            raise MELCloudError(int(data["error_id"]), data.get("error_message"))
 
-        for key, value in login_data.items():
-            if key == "language":
-                continue
+    def handle_login(self, data) -> Account:
+        self.raise_on_error(data)
+        d = data["login_data"]
 
-            setattr(self, key, value)
+        # Sanitize data for our dataclass' expected args
+        rename_key(d, "al", "AL")
+        rename_key(d, "caa", "CAA")
+        rename_key(d, "caca", "CACA")
+        rename_key(d, "caga", "CAGA")
+        rename_key(d, "client", "client_id")
+        rename_key(d, "cmi", "CMI")
+        rename_key(d, "cmsc", "CMSC")
+        rename_key(d, "csv_report1min", "CSV_report_1_min")
+        rename_key(d, "cutf", "CUTF")
+        rename_key(d, "date_seperator", "date_separator")
+        rename_key(d, "time_seperator", "time_separator")
+        rename_key(d, "decc_report", "DECC_report")
+        rename_key(d, "ml", "ML")
 
-        if self.context_key:
-            self.logged_in = True
+        del d["language_code"]
+        d["language"] = self.language
 
-    def _parse_devices(self, data):
-        self._raise_error(data)
-        self.loaded_devices = True
+        self.account = Account(**d)
+        self.logged_in = True
+        return self.account
 
-        for building in data:
-            b = Building(building)
-            self.buildings[b.id] = b
-
-        return self.buildings
+    def handle_device_list(self, data):
+        self.raise_on_error(data)

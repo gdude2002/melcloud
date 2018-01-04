@@ -23,7 +23,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='melcloud',
-    version='0.0.1',
+    version='0.0.2',
     description='MELCloud API library',
     long_description=long_description,
     url='https://github.com/gdude2002/melcloud',
@@ -50,5 +50,5 @@ setup(
 
     keywords='melcloud mitsubishi ecodan http web heating iot',
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
-    install_requires=['requests', 'aiohttp', 'inflection'],
+    install_requires=['requests', 'aiohttp', 'inflection', "dataclasses"],
 )
