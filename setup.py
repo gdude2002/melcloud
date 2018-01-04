@@ -50,5 +50,5 @@ setup(
 
     keywords='melcloud mitsubishi ecodan http web heating iot',
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
-    install_requires=['requests', 'aiohttp', 'inflection', "dataclasses"],
+    install_requires=['requests', 'aiohttp', 'inflection', "dataclasses", "arrow"],
 )

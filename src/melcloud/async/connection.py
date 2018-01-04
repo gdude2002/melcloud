@@ -4,7 +4,7 @@ from aiohttp import ClientSession
 from melcloud.constants import URL_LOGIN, KEY_HEADER, URL_LIST_DEVICES
 from melcloud.exceptions import NotLoggedInError
 from melcloud.objects.connection import BaseConnection
-from melcloud.utils import fix_dict_keys
+from melcloud.utils import fix_dict_keys, fix_list_keys
 
 from typing import TYPE_CHECKING
 
@@ -50,5 +50,5 @@ class AsyncConnection(BaseConnection):
 
         response = await self.session.get(URL_LIST_DEVICES)
         return self.platform.handle_device_list(
-            fix_dict_keys(await response.json())
+            fix_list_keys(await response.json())
         )

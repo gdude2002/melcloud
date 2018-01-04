@@ -4,7 +4,7 @@ from requests import Session
 from melcloud.constants import URL_LOGIN, KEY_HEADER, URL_LIST_DEVICES
 from melcloud.exceptions import NotLoggedInError
 from melcloud.objects.connection import BaseConnection
-from melcloud.utils import fix_dict_keys
+from melcloud.utils import fix_dict_keys, fix_list_keys
 
 from typing import TYPE_CHECKING
 
@@ -48,4 +48,4 @@ class SyncConnection(BaseConnection):
             self.platform.clear_devices()
 
         response = self.session.get(URL_LIST_DEVICES)
-        return self.platform.handle_device_list(fix_dict_keys(response.json()))
+        return self.platform.handle_device_list(fix_list_keys(response.json()))
