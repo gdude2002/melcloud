@@ -6,6 +6,8 @@ This API is not officially documented, but has been reverse-engineered by some d
 users. This API is relied upon for several projects, so it should be pretty stable, but
 remember to take the necessary precautions in your application.
 
+**This library should be considered alpha-state software at present.**
+
 Installing
 ----------
 
@@ -18,12 +20,9 @@ This will install the module with all its dependencies.
 Usage
 -----
 
-TODO: Write documentation
+**Please note**: This library is currently only read-only and provides read-only access to your MELCloud data.
 
-This module contains two sets of classes, and a set of basic objects to represent various concepts.
-
-* For code using asyncio, you can use ``melcloud.async``, which uses aiohttp under the hood
-* For synchronous code, you can use ``melcloud.sync``, which uses Requests under the hood
+We don't have any documentation just yet - why not check out the ``examples/`` directory, and take a look at the code?
 
 ----
 

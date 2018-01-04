@@ -17,25 +17,26 @@ __author__ = "Gareth Coles"
 class AsyncConnection(BaseConnection):
     def __init__(self, platform: "MELCloud"):
         super().__init__(platform)
-        self.session = ClientSession()
+        self.context_key: str = None
 
     async def login(self, email: str, password: str):
         if self.platform.logged_in:
             self.platform.reset()
 
-        response = await self.session.post(
-            URL_LOGIN, data={
-                "AppVersion": "1.9.3.0",
-                "CaptchaChallenge": "",
-                "CaptchaResponse": "",
-                "Email": email,
-                "Password": password,
-                "Language": self.platform.language.value,
-                "Persist": "true"
-            }
-        )
+        async with ClientSession() as session:
+            response = await session.post(
+                URL_LOGIN, data={
+                    "AppVersion": "1.9.3.0",
+                    "CaptchaChallenge": "",
+                    "CaptchaResponse": "",
+                    "Email": email,
+                    "Password": password,
+                    "Language": self.platform.language.value,
+                    "Persist": "true"
+                }
+            )
 
-        self.session._default_headers[KEY_HEADER] = self.platform.handle_login(
+        self.context_key = self.platform.handle_login(
             fix_dict_keys(await response.json())
         ).context_key
 
@@ -48,7 +49,9 @@ class AsyncConnection(BaseConnection):
         else:
             self.platform.clear_devices()
 
-        response = await self.session.get(URL_LIST_DEVICES)
+        async with ClientSession(headers={KEY_HEADER: self.context_key}) as session:
+            response = await session.get(URL_LIST_DEVICES)
+
         return self.platform.handle_device_list(
             fix_list_keys(await response.json())
         )
