@@ -1,10 +1,10 @@
 MELCloud Library
 ================
 
-A module providing access to Mitsubishi's `MELCloud <https://www.melcloud.com/>`_ API.
-This API is not officially documented, but has been reverse-engineered by some diligent
-users. This API is relied upon for several projects, so it should be pretty stable, but
-remember to take the necessary precautions in your application.
+A module providing access to Mitsubishi's `MELCloud <https://www.melcloud.com/>`_ API. This API
+is not officially documented, but has been reverse-engineered by some diligent users. This API
+is relied upon for several projects, so it should be pretty stable, but remember to take the
+necessary precautions in your application.
 
 **This library should be considered alpha-state software at present.**
 
