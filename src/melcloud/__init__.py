@@ -1,5 +1,7 @@
 # coding=utf-8
+from melcloud.async.connection import AsyncConnection
 from melcloud.objects.platform import MELCloud
+from melcloud.sync.connection import SyncConnection
 
 __author__ = "Gareth Coles"
-__all__ = ["MELCloud"]
+__all__ = ["AsyncConnection", "MELCloud", "SyncConnection"]

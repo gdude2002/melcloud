@@ -14,6 +14,7 @@ from setuptools import setup, find_packages
 # To use a consistent encoding
 from codecs import open
 from os import path
+import sys
 
 here = path.abspath(path.dirname(__file__))
 
@@ -49,6 +50,7 @@ setup(
     ],
 
     keywords='melcloud mitsubishi ecodan http web heating iot',
-    packages=find_packages(exclude=['contrib', 'docs', 'tests']),
+    package_dir={"": "src"},
+    packages=find_packages(where="src", exclude=['contrib', 'docs', 'tests', 'old']),
     install_requires=['requests', 'aiohttp', 'inflection', "dataclasses", "arrow"],
 )
