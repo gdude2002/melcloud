@@ -24,7 +24,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='melcloud',
-    version='0.0.3',
+    version='0.0.4',
     description='MELCloud API library',
     long_description=long_description,
     url='https://github.com/gdude2002/melcloud',
