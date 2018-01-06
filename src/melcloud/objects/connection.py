@@ -23,3 +23,6 @@ class BaseConnection(metaclass=ABCMeta):
 
     def load_devices(self, reload=False):
         raise NotImplementedError()
+
+    def get_device_info(self, device_id, building_id):
+        raise NotImplementedError()

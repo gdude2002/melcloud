@@ -51,3 +51,13 @@ class Building:
 
     floors: List[Floor]
     devices: List[Device]
+
+    def get_floor(self, floor_id):
+        for floor in self.floors:
+            if floor.id == floor_id:
+                return floor
+
+    def get_device(self, device_id):
+        for device in self.devices:
+            if device.device_id == device_id:
+                return device

@@ -1,7 +1,7 @@
 # coding=utf-8
 from aiohttp import ClientSession
 
-from melcloud.constants import URL_LOGIN, KEY_HEADER, URL_LIST_DEVICES
+from melcloud.constants import URL_LOGIN, KEY_HEADER, URL_LIST_DEVICES, URL_GET_DEVICE
 from melcloud.exceptions import NotLoggedInError
 from melcloud.objects.connection import BaseConnection
 from melcloud.utils import fix_dict_keys, fix_list_keys
@@ -52,6 +52,21 @@ class AsyncConnection(BaseConnection):
         async with ClientSession(headers={KEY_HEADER: self.context_key}) as session:
             response = await session.get(URL_LIST_DEVICES)
 
-        return self.platform.handle_device_list(
+        self.platform.handle_device_list(
             fix_list_keys(await response.json())
+        )
+
+        for building in self.platform.buildings:
+            for device in building.devices:
+                await self.platform.get_device_info(device.device_id, device.building_id)
+
+    async def get_device_info(self, device_id, building_id):
+        if not self.platform.logged_in:
+            raise NotLoggedInError()
+
+        async with ClientSession(headers={KEY_HEADER: self.context_key}) as session:
+            response = await session.get(URL_GET_DEVICE, params={"id": device_id, "buildingID": building_id})
+
+        self.platform.handle_device_info(
+            building_id, fix_dict_keys(await response.json())
         )

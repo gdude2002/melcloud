@@ -21,3 +21,4 @@ if platform.logged_in:
                 print(f">> Device: {device.device_id} ({device.device_name})")
                 print(f"   Zone 1: Currently: {device.room_temperature_zone_1}, Target: {device.set_temperature_zone_1}")
                 print(f"   Zone 2: Currently: {device.room_temperature_zone_2}, Target: {device.set_temperature_zone_2}")
+                print(f"   Current weather: {device.weather_observations[0].condition_name}")

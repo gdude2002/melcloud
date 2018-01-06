@@ -39,8 +39,11 @@ class MELCloud:
     def load_devices(self, reload=False):
         return self.connection.load_devices(reload)
 
+    def get_device_info(self, device_id, building_id):
+        return self.connection.get_device_info(device_id, building_id)
+
     def raise_on_error(self, data):
-        if data.get("error_id"):
+        if data.get("error_id") and data.get("error_message"):
             raise MELCloudError(int(data["error_id"]), data.get("error_message"))
 
     def handle_login(self, data) -> Account:
@@ -237,3 +240,30 @@ class MELCloud:
 
             building = Building(**d, devices=device_objects, floors=floor_objects)
             self.buildings.append(building)
+
+    def handle_device_info(self, building_id, data):
+        self.raise_on_error(data)
+        # has_pending_command
+        # last_communication
+        # next_communication
+        # prohibit_zone1
+        # prohibit_zone2
+        # scene_owner
+        # weather_observations
+
+        building = self.get_building(building_id)
+
+        if not building:
+            return  # TODO: Throw?
+
+        device = building.get_device(data["device_id"])
+
+        if not device:
+            return  # TODO: Throw?
+
+        device.update_from_device_info(data)
+
+    def get_building(self, building_id):
+        for building in self.buildings:
+            if building.id == building_id:
+                return building

@@ -5,6 +5,8 @@ from typing import List
 from dataclasses import dataclass
 
 from melcloud.objects.preset import Preset
+from melcloud.objects.weather import WeatherObservation
+from melcloud.utils import str_to_datetime
 
 __author__ = "Gareth Coles"
 
@@ -226,3 +228,27 @@ class Device:
     zone_2_name: str
 
     presets: List[Preset]
+
+    has_pending_command: bool = None
+    last_communication: datetime = None
+    next_communication: datetime = None
+    prohibit_zone1: bool = None
+    prohibit_zone2: bool = None
+    scene_owner: object = None  # ???
+    weather_observations: List[WeatherObservation] = None
+
+    def update_from_device_info(self, data):
+        if self.weather_observations is None:
+            self.weather_observations = []
+
+        self.weather_observations.clear()
+
+        self.has_pending_command = data["has_pending_command"]
+        self.last_communication = str_to_datetime(data["last_communication"])
+        self.next_communication = str_to_datetime(data["next_communication"])
+        self.prohibit_zone1 = data["prohibit_zone1"]
+        self.prohibit_zone2 = data["prohibit_zone2"]
+        self.scene_owner = data["scene_owner"]
+
+        for observation in data["weather_observations"]:
+            self.weather_observations.append(WeatherObservation(**observation))
