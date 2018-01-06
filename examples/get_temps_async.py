@@ -1,11 +1,11 @@
 # coding=utf-8
 import asyncio
 from melcloud import MELCloud, AsyncConnection
-from melcloud.constants import LANGUAGES
+from melcloud.constants import Languages
 
 __author__ = "Gareth Coles"
 
-platform = MELCloud(LANGUAGES.EN, connection=AsyncConnection)
+platform = MELCloud(Languages.EN, connection=AsyncConnection)
 
 
 async def run():

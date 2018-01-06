@@ -1,6 +1,6 @@
 # coding=utf-8
 from typing import ClassVar, List
-from melcloud.constants import LANGUAGES
+from melcloud.constants import Languages
 from melcloud.exceptions import MELCloudError
 from melcloud.objects.account import Account
 from melcloud.objects.building import Building
@@ -15,8 +15,8 @@ __author__ = "Gareth Coles"
 
 
 class MELCloud:
-    def __init__(self, language: LANGUAGES, connection: ClassVar[BaseConnection]=SyncConnection):
-        self.language: LANGUAGES = language
+    def __init__(self, language: Languages, connection: ClassVar[BaseConnection]=SyncConnection):
+        self.language: Languages = language
         self.connection: BaseConnection = connection(self)
 
         self.logged_in: bool = False

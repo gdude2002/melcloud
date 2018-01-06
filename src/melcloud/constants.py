@@ -18,7 +18,7 @@ URL_SET_OPTIONS = "https://app.melcloud.com/Mitsubishi.Wifi.Client/User/UpdateAp
 KEY_HEADER = "X-MitsContextKey"
 
 
-class LANGUAGES(IntEnum):
+class Languages(IntEnum):
     """
     Enum of supported language codes
     """
@@ -49,3 +49,27 @@ class LANGUAGES(IntEnum):
     HR = 23  #: Croatian
     RO = 24  #: Romanian
     SL = 25  #: Slovenian
+
+
+class Characteristics(IntEnum):
+    """
+    Enum of supported changeable settings
+    """
+
+    HEATING_STATE = 0
+    TEMPERATURE = 1
+    DISPLAY_UNITS = 2
+    ROTATION_SPEED = 3
+    HORIZONTAL_TILT_ANGLE = 4
+    VERTICAL_TILT_ANGLE = 5
+
+
+class HeatingState(IntEnum):
+    """
+    Supported heating state settings
+    """
+
+    OFF = 0
+    HEAT = 1
+    COOL = 2
+    AUTO = 3

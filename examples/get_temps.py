@@ -1,10 +1,10 @@
 # coding=utf-8
 from melcloud import MELCloud
-from melcloud.constants import LANGUAGES
+from melcloud.constants import Languages
 
 __author__ = "Gareth Coles"
 
-platform = MELCloud(LANGUAGES.EN)
+platform = MELCloud(Languages.EN)
 platform.login("<EMAIL ADDRESS>", "<PASSWORD>")
 
 if platform.logged_in:

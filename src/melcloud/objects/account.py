@@ -2,7 +2,7 @@
 from datetime import datetime
 from dataclasses import dataclass
 
-from melcloud.constants import LANGUAGES
+from melcloud.constants import Languages
 
 __author__ = "Gareth Coles"
 
@@ -34,7 +34,7 @@ class Account:
     hide_preset_panel: bool
     is_impersonated: bool
     is_staff: bool
-    language: LANGUAGES
+    language: Languages
     map_latitude: float
     map_longitude: float
     map_view: bool
