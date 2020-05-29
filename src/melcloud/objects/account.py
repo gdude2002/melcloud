@@ -17,6 +17,7 @@ class Account:
     client_id: int
     CMI: bool
     CMSC: bool
+    chart_series_hidden: int
     context_key: str
     country: int
     country_name: str

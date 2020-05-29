@@ -1,5 +1,5 @@
 # coding=utf-8
-from melcloud.async.connection import AsyncConnection
+from melcloud.do_async.connection import AsyncConnection
 from melcloud.objects.platform import MELCloud
 from melcloud.sync.connection import SyncConnection
 
